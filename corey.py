@@ -13,18 +13,57 @@ def deck():													#Create cards for all suites
 		a = cards.pop()
 		player1_hand.append(a)
 	player2_hand = cards
-	print player1_hand										#These worked, will need deleted
-	print player2_hand
 
 #deck()
 
-player1_pile = []
-player2_pile = []
+
+pot = [] 
 
 def war(deck_one, deck_two):
-	for i in range(1):
+	if len(player2_hand) < 3:								#If players do not have enough cards to war..
+		player1_pile.extend(pot)							#Then other player wins the war
+		player1_pile.append(player1_card)
+		player1_pile.append(player2_card)
+		plyaer1_pile.extend(player2_hand)
+		pot = []
+	if len(player1_hand) < 3:
+		player2_pile.extend(pot)
+		player2_pile.append(player1_card)			
+		player2_pile.append(player2_card)
+		player2_pile.extend(player1_hand)
+		pot = []
+	else:													#If they do draw 3 face down, draw 1 to play with
+		for i in range(3):
+			a = player1_hand.pop()
+			pot.append(a)
+			b = player2_hand.pop()
+			pot.append(b)
 	
+		new_player1_card = player1_hand.pop()
+		new_player2_card = player2_hand.pop()
+		pot.append(new_player1_card)
+		pot.append(new_player2_card)
 	
+		if new_player1_card[0] == new_player2_card[0]:		#If tied again, do war a second time
+			war(deck_one, deck_two)				
+		else:
+			if new_player1_card[0] > new_player2_card[0]:
+				player1_pile.extend(pot)
+				player1_pile.append(player1_card)
+				player1_pile.append(player2_card)
+				pot = []
+			else: 
+				player2_pile.extend(pot)
+				player2_pile.append(player1_card)			
+				player2_pile.append(player2_card)
+				pot = []
+
+
+player1_pile = []	
+player2_pile = []
+
+def game(deck_one, deck_two):
+	for i in range(2):
 		if len(player1_hand) != 0 and len(player2_hand) != 0:			#if decks are not empty
 			player1_card = player1_hand.pop()							
 			player2_card = player2_hand.pop()
@@ -38,10 +77,17 @@ def war(deck_one, deck_two):
 		
 		
 			else:														#if value of cards is equal
-				
+				war(deck_one, deck_two)									#War it out
 				
 		else:															#if not more cards in either's deck
 			player1_hand = player1_hand + player1_pile					#Then add your pile to your deck
 			player2_hand = player2_hand + player2_pile
+			random.shuffle(player1_hand)								#Shuffle cards
+			random.shuffle(player2_hand)
+			player1_pile = []
+			player2_pile = []
+		print player1_hand
+		print player2_hand
 		
-			#Need to shuffle at some point
+game(player1_hand, player2_hand)		
+#Need to get player1 hand and player2 hand into this function
