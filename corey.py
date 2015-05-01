@@ -3,7 +3,16 @@ import pyglet
 
 window = pyglet.window.Window()
 
-def deck():										#Create cards for all suites
+def deck():									#Create cards for all suites
+"""
+Invocation: List of deck of cards
+Meaning: This function is for creating the deck of cards used in the game. 
+Each sign is assigned a number 2-15, with two being the two card and 15 being an ace. It
+then adds these cards to deck to be used for the game. These cards are stored in a tuple 
+and then shuffled. Then 26 cards are dealt to player1 and player2.
+Preconditions: The list is originally empty.
+Postconditions: The returned value is a list of two lists containing tuples of a value and sign of a card.
+"""	
 	cards = []
 	signs = ["spades", "hearts", "clubs", "diamonds"]
 	for i in range(2,15):								#Loops through and adds a value to the 4 suites	
@@ -23,6 +32,14 @@ imageHeight = 100
 
 pot = [] 
 def war(deck_one, deck_two, player1_card, player2_card, player1_pile, player2_pile):
+"""
+Invocation: War
+Meaning: This function creates what to do in the case that the two players play the same value cards.
+Each player lays down 3 face down cards and 1 card face up. Who ever has the greatest card
+wins all the cards laid out. If the players cards tie again, it runs through the function again.
+Preconditions: deck_one and deck_two should be a list of tuples. player1_card and player2_card are both tuples with the first element being equal. player1_pile and player2_pile is also a list of tuples.
+Postconditions: This function compares two other tuples and compares the first elements and sends the higher numbered element to the players pile list.
+"""
 	global pot
 	global image3
 	global image4
@@ -119,6 +136,13 @@ deck_one , deck_two = deck()
 label = pyglet.text.Label(' ')								
 
 def play_one_turn(deck_one, deck_two):
+"""
+Invocation: one_turn(deck_one, deck_two)
+Meaning: This function takes player1 and player2 through 1 turn and using pyglet to show the card on the window.
+cards.
+Preconditions:deck_one and deck_two should be a list of tuples.
+Postconditions: The returned value is to place tuples in a players pile list.
+"""
 	global player1_pile	
 	global player2_pile
 	global image1
@@ -171,10 +195,22 @@ def play_one_turn(deck_one, deck_two):
 				
 @window.event
 def on_key_press(symbol, modifiers):
+"""
+Invocation: Key(symbol, modifiers).
+Meaning: Pressing a key plays a new turn within the round.
+Preconditions: A key needs to be pressed.
+Postconditions: The returned value is the key pressed.
+"""	
 	play_one_turn(deck_one, deck_two)
 	
 @window.event
 def on_draw():							#Used to show turn within round by pressing a key
+"""
+Invocation: Draw
+Meaning: This function creates a window and draws the images of cards from our deck.
+Preconditions: Images are png files taken from a folder.
+Postconditions: The functions creates a window and then draws images.
+"""
 	window.clear()
 	if len(deck_one) == 0 and len(deck_two) == 0:
 		label.draw()
