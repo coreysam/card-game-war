@@ -3,16 +3,16 @@ import pyglet
 
 window = pyglet.window.Window()
 
-def deck():													#Create cards for all suites
+def deck():										#Create cards for all suites
 	cards = []
 	signs = ["spades", "hearts", "clubs", "diamonds"]
-	for i in range(2,15):
+	for i in range(2,15):								#Loops through and adds a value to the 4 suites	
 		for j in signs:
 			cards.append((i,j))
 
 	random.shuffle(cards)
 	player1_hand = []
-	for i in range(26):										#split deck for two players
+	for i in range(26):								#split deck for two players
 		a = cards.pop()
 		player1_hand.append(a)
 	player2_hand = cards
@@ -32,13 +32,13 @@ def war(deck_one, deck_two, player1_card, player2_card, player1_pile, player2_pi
 	global image8
 	global image9
 	global image10	
-	if len(deck_two) < 4:
-		if len(pot) == 0:										#If players do not have enough cards to war..
+	if len(deck_two) < 4:								#If players do not have enough cards to war..
+		if len(pot) == 0:							#If pot is empty..used at first to make sure to add correctly
 			player1_pile.append(player1_card)
 			player1_pile.append(player2_card)
 			player1_pile += deck_two
 		else:
-			player1_pile += pot							#Then other player wins the war
+			player1_pile += pot						#If cards in pot, then other player wins the war and gets cards
 			player1_pile.append(player1_card)
 			player1_pile.append(player2_card)
 			player1_pile += deck_two
@@ -54,7 +54,7 @@ def war(deck_one, deck_two, player1_card, player2_card, player1_pile, player2_pi
 			player2_pile.append(player2_card)
 			player2_pile += deck_one
 			pot = []
-	else:													#If they do draw 3 face down, draw 1 to play with
+	else:											#If they do draw 3 face down, draw 1 to play with
 		for i in range(3):
 			a = deck_one.pop()
 			pot.append(a)
@@ -64,7 +64,7 @@ def war(deck_one, deck_two, player1_card, player2_card, player1_pile, player2_pi
 		new_player1_card = deck_one.pop()
 		new_player2_card = deck_two.pop()
 		str3 = str(new_player1_card[0]) + '_of_' + str(new_player1_card[1]) + '.png'
-		str4 = str(new_player2_card[0]) + '_of_' + str(new_player2_card[1]) + '.png'
+		str4 = str(new_player2_card[0]) + '_of_' + str(new_player2_card[1]) + '.png'			#images being added
 		image3 = pyglet.resource.image('cards/' + str3)
 		image4 = pyglet.resource.image('cards/' + str4)
 		image3.width = imageWidth
@@ -94,10 +94,10 @@ def war(deck_one, deck_two, player1_card, player2_card, player1_pile, player2_pi
 		pot.append(new_player2_card)
 	
 		if new_player1_card[0] == new_player2_card[0]:		#If tied again, do war a second time
-			war(deck_one, deck_two, player1_card, player2_card, player1_pile, player2_pile)
+			war(deck_one, deck_two, player1_card, player2_card, player1_pile, player2_pile)			#If tied again, do war a second time
 		else:
 			if new_player1_card[0] > new_player2_card[0]:
-				player1_pile += pot
+				player1_pile += pot									#comparing new cards
 				player1_pile.append(player1_card)
 				player1_pile.append(player2_card)
 				pot = []
@@ -116,7 +116,7 @@ player2_pile = []
 player1_card = (2, 'spades')
 player2_card = (3, 'hearts')
 deck_one , deck_two = deck()	
-label = pyglet.text.Label(' ')									#Uses the tuple from game to make two playing decks
+label = pyglet.text.Label(' ')								
 
 def play_one_turn(deck_one, deck_two):
 	global player1_pile	
@@ -128,8 +128,8 @@ def play_one_turn(deck_one, deck_two):
 	global player1_card
 	global player2_card	
 	global label									
-	if len(deck_one) != 0 and len(deck_two) != 0:		#if decks are not empty
-		player1_card = deck_one.pop()							
+	if len(deck_one) != 0 and len(deck_two) != 0:		#if decks are not empty play a round
+		player1_card = deck_one.pop()						
 		player2_card = deck_two.pop()
 
 		str1 = str(player1_card[0]) + '_of_' + str(player1_card[1]) + '.png'
@@ -174,7 +174,7 @@ def on_key_press(symbol, modifiers):
 	play_one_turn(deck_one, deck_two)
 	
 @window.event
-def on_draw():
+def on_draw():							#Used to show turn within round by pressing a key
 	window.clear()
 	if len(deck_one) == 0 and len(deck_two) == 0:
 		label.draw()
